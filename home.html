@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CK</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet">
+  <style>
+   body{
+       background:black;
+
+
+color:white;
+  font-family: "Noto Sans JP", serif;
+ font-weight: 100;
+
+  }
+a{
+font-size:80px;
+}
+  #look{
+
+font-size:100px;
+
+}
+#js{
+font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;
+font-size:20px;
+}
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      font-size: 130px;
+      color: white;
+    
+    }
+  </style>
+  
+</head>
+<body>
+<script src ="ck.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mojs/core"></script>
+  <div id="logo"></div>
+   
+   <pre id="js">const names = ["Alice", "Bob", "Charlie", "Daisy", "Eve", "Frank", "Grace", "Hank"];
+
+async function setupCamera() {
+    video = document.getElementById('video');
+    const stream = await navigator.mediaDevices.getUserMedia({
+        video: {, width: 100 w:100}
+    });
+    video.srcObject = stream;
+    return new Promise((resolve) => {
+        video.onloadedmetadata = () => {
+            resolve(video);
+        };
+    });
+}
+
+async function loadModel() {
+    model = await blazeface.load();
+    console.log('BlazeFace model loaded');
+}
+
+function getRandomName() {
+    return names[Math.floor(Math.random() * names.length)];
+}
+
+async function detectFaces() {
+    const returnTensors = false; 
+    const predictions = await model.estimateFaces(video, returnTensors);
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    if (predictions.length > 0) {
+        var i = 0;
+        predictions.forEach(prediction => {
+            i++;
+            const [startX, startY, endX, endY] = prediction.topLeft.concat(prediction.bottomRight);
+            const width = endX - startX;
+            const height = endY - startY;
+
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(startX, startY, width, height);
+
+            const randomName = getRandomName();
+            const mg = endY-startY;
+            
+            const people = "People";
+            
+            ctx.fillStyle = 'red';
+            ctx.font = '30px Arial';
+            ctx.fillText(mg, startX, startY - 10);
+            ctx.fillStyle = 'red';
+            ctx.font = '30px Arial';
+            ctx.fillText(people, startX, endY + 30);
+        });
+    }
+
+    requestAnimationFrame(detectFaces);
+}</pre>
+<div class="he"><a href="ck.js" download>Download here</a></div>
+  <script>
+    const text = 'CK-JS';
+    const logo = document.getElementById('logo');
+
+  
+    text.split('').forEach((char, index) => {
+      const span = document.createElement('span');
+      span.innerText = char;
+      span.classList.add('letter');
+      logo.appendChild(span);
+
+      new mojs.Html({
+        el: span,
+        x: { 500:400},
+        y: { 60:0 },
+    
+        opacity: { 0: 1 },
+        duration: 1000,
+        delay: index * 300, 
+        easing: 'ease.out'
+      }).play();
+    });
+     
+   
+
+  </script>
+</body>
+</html>
