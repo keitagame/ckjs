@@ -9,7 +9,9 @@ function highlight(code){
   mot: /[a-zA-Z_]\w*(?=\:)/g,
     string: /(?!.*span)(".*?"|'.*?'|`.*?`)/g,
     keyword: /\b(function|console|return|if|else)\b/g,
- k: /\b(true|false|await|async|Math|for|forEach)\b/g,
+ k: /\b(true|false)\b/g,
+  e: /\b(await|async|Math)\b/g,
+    y: /\b(document)\b/g,
     const: /\b(const)\b/g,
     let: /\b(let)\b/g,
     var: /\b(var)\b/g,
@@ -24,7 +26,9 @@ let variableNames = [];
 
 .replace(patterns.mot, '<span style ="color: #00f00f;">$&</span>')
  .replace(patterns.num, '<span style ="color: #00ff00;">$&</span>')
-    .replace(patterns.k, '<span style ="color: #00ff00;">$&</span>')
+    .replace(patterns.k, '<span style ="color: #fff000;">$&</span>')
+     .replace(patterns.e, '<span style ="color: #00ff00;">$&</span>')
+ .replace(patterns.y, '<span style ="color: #ff0000;">$&</span>')
     .replace(patterns.string, '<span style ="color: #ff00ff;">$&</span>')
    .replace(patterns.functions, '<span style ="color: #c000ff;">$&</span>')
  
