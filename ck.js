@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-const codes = document.getElementById('js');
+function mainLoop() {
+    const codes = document.getElementById('js');
 highlight(codes);
+    
+    requestAnimationFrame(mainLoop);
+}
+
+requestAnimationFrame(mainLoop);
+
+
 });
 function highlight(code){
   
